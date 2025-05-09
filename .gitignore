@@ -1,0 +1,30 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pkl
+*.h5
+*.keras
+
+# Environments
+.env
+.venv/
+venv/
+
+# Editor folders
+.idea/
+.vscode/
+
+# Uploads and temporary files
+/uploads
+uploads/
+
+# Node (if accidentally added)
+node_modules/
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# Docker artifacts
+*.log
