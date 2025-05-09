@@ -46,50 +46,93 @@ def classify_image(image):
     predicted_class = int(np.argmax(predictions))
     return predicted_class, predictions, None
 
-# --- Streamlit UI ---
+# --- Streamlit Custom Styling ---
 st.set_page_config(page_title="🧠 MRI Dementia Classifier", layout="centered")
+
+# Custom CSS
+st.markdown("""
+    <style>
+        body {
+            background-color: #3b5e94;
+            font-family: 'Poppins', sans-serif;
+        }
+        .main {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        h2, h5 {
+            color: white;
+        }
+        .uploaded-img {
+            border-radius: 10px;
+            border: 2px solid #fff;
+            margin-top: 10px;
+            width: 200px;
+            height: 190px;
+            object-fit: cover;
+        }
+        .bar {
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            height: 20px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            background-color: #2E86AB;
+            height: 100%;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: gray;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Header
 st.markdown("""
-    <h2 style='text-align: center; color: #2E86AB;'>🧠 AI-Powered MRI Dementia Classifier</h2>
-    <p style='text-align: center;'>Upload an MRI scan to classify possible dementia type using a trained deep learning model.</p>
+    <div class="main">
+        <h2 style='text-align: center;'>🧠 AI-Powered MRI Dementia Classifier</h2>
+        <p style='text-align: center;'>Upload an MRI scan to classify possible dementia type using a trained deep learning model.</p>
+    </div>
 """, unsafe_allow_html=True)
 
 # Upload image
-uploaded_file = st.file_uploader(" Upload MRI Image", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+uploaded_file = st.file_uploader("Upload MRI Image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    st.markdown("### Preview Uploaded Image")
     image = Image.open(uploaded_file)
     st.image(image, width=200, caption="Uploaded MRI (200×190)", output_format="JPEG")
 
-    if st.button("🚀 Run Classification", use_container_width=True):
+    if st.button("🚀 Upload & Predict"):
         with st.spinner("Analyzing image..."):
             pred_class, probs, error = classify_image(image)
             if error:
-                st.error(f" {error}")
+                st.error(error)
             else:
-                st.success(f" **Prediction: {CLASS_NAMES[pred_class]}**")
+                st.success(f"Prediction: {CLASS_NAMES[pred_class]}")
 
                 st.markdown("### Class Probabilities")
                 for i, prob in enumerate(probs):
                     st.markdown(f"""
                         <div style='margin-bottom: 10px;'>
                             <b>{CLASS_NAMES[i]}</b>
-                            <div style='background-color: #f1f1f1; border-radius: 8px; height: 20px; overflow: hidden;'>
-                                <div style='width: {prob * 100:.1f}%; background-color: #2E86AB; height: 100%;'></div>
+                            <div class='bar'>
+                                <div class='bar-fill' style='width: {prob * 100:.1f}%;'></div>
                             </div>
                             <small>{prob * 100:.2f}%</small>
                         </div>
                     """, unsafe_allow_html=True)
-
 else:
     st.info("Please upload a valid MRI image to begin classification.")
 
 # Footer
 st.markdown("""
     <hr>
-    <div style='text-align: center; font-size: 14px; color: gray;'>
+    <div class='footer'>
         Built with Streamlit & TensorFlow | A prototype for educational purposes
     </div>
 """, unsafe_allow_html=True)
