@@ -95,7 +95,7 @@ st.markdown("""
 # Header
 st.markdown("""
     <div class="main">
-        <h2 style='text-align: center;'>🧠 AI-Powered MRI Dementia Classifier</h2>
+        <h2 style='text-align: center;'>🧠 AI-Powered Alzheimer Dementia Classifier</h2>
         <p style='text-align: center;'>Upload an MRI scan to classify possible dementia type using a trained deep learning model.</p>
     </div>
 """, unsafe_allow_html=True)
